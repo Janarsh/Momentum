@@ -1,0 +1,29 @@
+<h1>Edit Sprint</h1>
+
+<%= form_with model: [@project, @sprint], local: true do |f| %>
+  <div class="field">
+    <%= f.label :name %>
+    <%= f.text_field :name, required: true %>
+  </div>
+
+  <div class="field">
+    <%= f.label :start_date %>
+    <%= f.date_field :start_date, required: true %>
+  </div>
+
+  <div class="field">
+    <%= f.label :end_date %>
+    <%= f.date_field :end_date, required: true %>
+  </div>
+
+  <div class="field">
+    <%= f.label :description %>
+    <%= f.text_area :description %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "Update Sprint", class: "btn btn-success" %>
+  </div>
+<% end %>
+
+<%= link_to "Back", project_path(@project), class: "btn btn-secondary" %>

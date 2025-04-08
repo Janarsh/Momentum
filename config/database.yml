@@ -1,0 +1,19 @@
+default: &default
+  adapter: mysql2
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  encoding: utf8
+  username: root
+  timeout: 5000
+  host: localhost
+
+development:
+  <<: *default
+  database: momentum
+
+test:
+  <<: *default
+  database: momentum_test
+
+production:
+  <<: *default
+  database: momentum_production

@@ -1,0 +1,16 @@
+<h1><%= @sprint.name %></h1>
+<p><%= @sprint.description %></p>
+
+<h2>Tasks</h2>
+<%= link_to "New Task", new_project_sprint_task_path(@project, @sprint), class: "btn btn-success" %>
+
+<ul>
+  <% @sprint.tasks.each do |task| %>
+    <li>
+      <%= link_to task.name, project_sprint_task_path(@project, @sprint, task) %>
+      (Assigned to: <%= task.assignee&.name || "Unassigned" %>)
+    </li>
+  <% end %>
+</ul>
+
+<%= link_to "Back to Project", project_path(@project), class: "btn btn-secondary" %>

@@ -1,0 +1,25 @@
+<h1>Sprints</h1>
+
+<%= link_to "New Sprint", new_project_sprint_path, class: "btn btn-primary" %>
+<br><br>
+<table>
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Project</th>
+    <th>Actions</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @sprints.each do |sprint| %>
+    <tr>
+      <td><%= link_to sprint.name, project_sprint_path(sprint.project, sprint) %></td>
+      <td><%= sprint.project.name %></td>
+      <td>
+        <%= link_to "Edit", edit_project_sprint_path(sprint.project, sprint), class: "btn btn-warning" %>
+        <%= link_to "Delete", project_sprint_path(sprint.project, sprint), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger" %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

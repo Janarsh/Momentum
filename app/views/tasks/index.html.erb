@@ -1,0 +1,48 @@
+<h1>Tasks</h1>
+
+<%= link_to "New Task", new_project_sprint_task_path(@sprint.project, @sprint), class: "btn btn-success" %>
+
+<table>
+  <thead>
+  <tr>
+    <th>Task Name</th>
+    <th>Task Type</th>
+    <th>Description</th>
+    <th>Status</th>
+    <th>Priority</th>
+    <th>Points</th>
+    <th>Sprint</th>
+    <th>Start Date</th>
+    <th>Due Date</th>
+    <th>End Date</th>
+    <th>Assignee</th>
+    <th>Created_by</th>
+    <th>Actions</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @tasks.each do |task| %>
+    <tr>
+      <td><%= task.name %></td>
+      <td><%= task.task_type.humanize %></td>
+      <td><%= task.description %></td>
+      <td><%= task.status %></td>
+      <td><%= task.priority %></td>
+      <td><%= task.points %></td>
+      <td><%= task.sprint&.name %></td>
+      <td><%= task.start_date %></td>
+      <td><%= task.due_date %></td>
+      <td><%= task.end_date %></td>
+      <td><%= task.assignee&.name || "Unassigned" %></td>
+      <td><%= task.created_by&.name%></td>
+      <td>
+        <%= link_to "Show", project_sprint_task_path(@sprint.project, @sprint, task) %> |
+        <%= link_to "Edit", edit_project_sprint_task_path(@sprint.project, @sprint, task) %> |
+        <%= link_to "Delete", project_sprint_task_path(@sprint.project, @sprint, task), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<%= link_to "Back to Sprint", project_sprint_path(@sprint.project, @sprint), class: "btn btn-secondary" %>
