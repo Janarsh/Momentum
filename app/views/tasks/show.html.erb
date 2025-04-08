@@ -1,0 +1,53 @@
+<h1>Task Details</h1>
+
+<p><strong>Task Type:</strong> <%= @task.task_type.humanize %></p>
+<p><strong>Description:</strong> <%= @task.description %></p>
+<p><strong>Status:</strong> <%= @task.status %></p>
+<p><strong>Priority:</strong> <%= @task.priority %></p>
+<p><strong>Start Date:</strong> <%= @task.start_date %></p>
+<p><strong>Due Date:</strong> <%= @task.due_date %></p>
+<p><strong>End Date:</strong> <%= @task.end_date %></p>
+<p><strong>Assignee:</strong> <%= @task.assignee&.name || "Unassigned" %></p>
+
+<%= link_to "Back to Tasks", project_sprint_tasks_path(@sprint.project, @sprint), class: "btn btn-secondary" %>
+
+<h3>Attachments</h3>
+<ul>
+  <% @task.attachments.each do |attachment| %>
+    <li>
+      <%= link_to attachment.file.filename, rails_blob_path(attachment.file, disposition: "attachment") %>
+      <% if policy(attachment).destroy? %>
+        <%= link_to "Delete", project_sprint_task_attachment_path(@task.sprint.project, @task.sprint, @task, attachment), method: :delete, data: { confirm: "Are you sure?" } %>
+      <% end %>
+    </li>
+  <% end %>
+</ul>
+
+<%= form_with model: [@task.sprint.project, @task.sprint, @task, Attachment.new], local: true, multipart: true do |f| %>
+  <div class="field">
+    <%= f.label :file_name, "Upload an attachment" %>
+    <%= f.file_field :file_name, required: true %>
+  </div>
+  <%= f.submit "Upload" %>
+<% end %>
+
+<h3>Comments</h3>
+<ul>
+  <% @task.comments.each do |comment| %>
+    <li>
+      <strong><%= comment.posted_by&.name %></strong>: <%= comment.message %> |
+      <%= comment.created_at %>
+      <% if policy(comment).destroy? %>
+        <%= link_to "Delete", project_sprint_task_comment_path(@task.sprint.project, @task.sprint, @task, comment), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
+      <% end %>
+    </li>
+  <% end %>
+</ul>
+
+<%= form_with model: [@task.sprint.project, @task.sprint, @task, Comment.new], local: true do |f| %>
+  <div class="field">
+    <%= f.label :message, "Add a comment" %>
+    <%= f.text_area :message, required: true %>
+  </div>
+  <%= f.submit "Comment" %>
+<% end %>
