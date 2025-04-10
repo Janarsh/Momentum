@@ -8,7 +8,26 @@ class TasksController < ApplicationController
   after_action :notify_user_on_update, only: :update
 
   def index
-    @tasks = Task.all
+    @tasks = Task.paginate(page: params[:page], per_page: params[:per_page] || 1)
+
+    respond_to do |format|
+      format.html do
+        render :index
+      end
+
+      format.json do
+        render json: {
+          data: TaskBlueprint.render(@tasks, view: :detailed),
+          pagination: {
+            current_page: @tasks.current_page,
+            next_page: @tasks.next_page,
+            prev_page: @tasks.previous_page,
+            total_pages: @tasks.total_pages,
+            total_entries: @tasks.total_entries
+          }
+        }
+      end
+    end
     authorize Task
   end
 

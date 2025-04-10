@@ -1,7 +1,7 @@
-class TaskBlueprint < Blueprinter::Base
+class SprintBlueprint < Blueprinter::Base
   identifier :id
 
-  fields :title, :description, :status, :due_date
+  fields :name, :start_date, :end_date
 
-  association :assignee, blueprint: UserBlueprint, name: :assignee, if: ->(task, _) { task.assignee.present? }
+  association :tasks, blueprint: TaskBlueprint
 end

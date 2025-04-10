@@ -66,3 +66,7 @@ gem "devise", "~> 4.9"
 gem "pundit", "~> 2.5"
 
 gem "sidekiq", "~> 7.3"
+
+gem "will_paginate", "~> 4.0"
+
+gem "blueprinter", "~> 1.1"

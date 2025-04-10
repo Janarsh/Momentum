@@ -6,7 +6,26 @@ class SprintsController < ApplicationController
   after_action :notify_user_on_update, only: :update
 
   def index
-    @sprints = Sprint.includes(:project).all
+    @sprints = Sprint.paginate(page: params[:page], per_page: params[:per_page] || 1)
+
+    respond_to do |format|
+      format.html do
+        render :index
+      end
+
+      format.json do
+        render json: {
+          data: SprintBlueprint.render(@sprints),
+          pagination: {
+            current_page: @sprints.current_page,
+            next_page: @sprints.next_page,
+            prev_page: @sprints.previous_page,
+            total_pages: @sprints.total_pages,
+            total_entries: @sprints.total_entries
+          }
+        }
+      end
+    end
   end
 
   def create

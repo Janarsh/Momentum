@@ -7,7 +7,26 @@ class ProjectsController < ApplicationController
   after_action :notify_user_on_update, only: :update
 
   def index
-    @projects = policy_scope(Project)
+    @projects = policy_scope(Project).paginate(page: params[:page], per_page: params[:per_page] || 1)
+
+    respond_to do |format|
+      format.html do
+        render :index
+      end
+
+      format.json do
+        render json: {
+          data: ProjectBlueprint.render(@projects),
+          pagination: {
+            current_page: @projects.current_page,
+            next_page: @projects.next_page,
+            prev_page: @projects.previous_page,
+            total_pages: @projects.total_pages,
+            total_entries: @projects.total_entries
+          }
+        }
+      end
+    end
   end
 
   def show
